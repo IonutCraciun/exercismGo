@@ -6,14 +6,16 @@ import (
 
 // IsIsogram function
 func IsIsogram(input string) bool {
-	for key, val := range input {
-		if (val >= 'A' && val <= 'Z') || (val >= 'a' && val <= 'z') {
-			for i := key + 1; i < len(input); i++ {
-				if unicode.ToLower(val) == unicode.ToLower(rune(input[i])) {
-					return false
-				}
-			}
+	set := make(map[rune]bool)
+	for _, val := range input {
+		if !unicode.IsLetter(val) {
+			continue
 		}
+		val = unicode.ToLower(val)
+		if set[val] {
+			return false
+		}
+		set[val] = true
 	}
 	return true
 }
