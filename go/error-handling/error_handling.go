@@ -25,13 +25,10 @@ func Use(o ResourceOpener, input string) (err error) {
 	// for other type of errors, just save it
 	defer func() {
 		if r := recover(); r != nil {
-			switch e := r.(type) {
-			case FrobError:
-				res.Defrob(e.defrobTag)
-				err = e
-			case error:
-				err = e
+			if frob, ok := r.(FrobError); ok {
+				res.Defrob(frob.defrobTag)
 			}
+			err = r.(error)
 		}
 	}()
 
